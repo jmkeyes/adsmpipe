@@ -1,0 +1,76 @@
+.\"
+.\" Process this file with groff -man -Tascii adsmpipe.1
+.\"
+
+.TH ADSMPIPE 1 "SEPTEMBER 2014"
+
+.SH NAME
+adsmpipe \- Tivoli ADSM client for pipes.
+
+.SH SYNOPSIS
+.B adsmpipe [-[tcxd] -f <filename> [-l <size>] [-v]] [-p <oldpw/newpw/newpw>]
+
+.SH DESCRIPTION
+.B adsmpipe
+adsmpipe is a backup client for TSM that enables backing up data from standard output. It's useful for backing up
+or archiving databases not supported by the Tivoli Data Protection product class.
+
+.SH OPTIONS
+.PP Creates, extracts or lists files in the ADSM pipe backup area.
+.IP -t
+Lists files in pipe backup area matching the pattern.
+.IP -c
+Creates a file in pipe backup area. Data comes from standard input.
+.IP -x
+Extracts a file in pipe backup. Data goes to standard output.
+.IP -d
+Deletes the file from active store.
+.IP -B
+Store data in the backup space of the ADSM server.
+.IP -A
+Store data in the archive space of the ADSM server.
+.IP -f\ <file>
+Provide a filename for creation and extraction operations. For list operations, the filename can be a pattern with wildcards.
+.IP -l\ <size>
+The estimated size of data in bytes. This is only needed for create operations.
+.IP -p\ <password>|<oldpw/newpw/newpw>
+Provides a password for sign-on or changes the password from an old value to a new one.
+.IP -v
+Perform operations with more verbose output.
+.IP -n\ <count>
+File number to retrieve if multiple versions.
+.IP -s\ <filespace>
+Specify file space (default "/adsmpipe")
+.IP -m
+Overwrite management class (API Version 2.1.2 and higher)
+
+.SH EXAMPLES
+.IP "Create a dump a single MySQL database named 'mydatabase' to standard output and store it in the file space '/adsmpipe/mysql' on the Tivoli server:"
+.IP
+mysqldump -B -F --add-drop-table -h localhost -u root -p'secret' 'mydatabase' | adsmpipe -f 'mydatabase' -c -s '/adsmpipe/mysql'
+.BR
+.IP "Retrieve a backed-up MySQL database named 'mydatabase' from the Tivoli server and restore it to the local database."
+.IP
+adsmpipe -f 'mydatabase' -x -s '/adsmpipe/mysql' | mysql -h localhost -u root -p'secret' 'mydatabase'
+.BR
+
+.SH FILES
+.I $DSMI_DIR/dsm.opt
+.RS
+The system-wide Tivoli Client configuration file. In order for ADSMPipe to detect it, define the DSMI_DIR and DSMI_CONFIG environment variables.
+
+.SH ENVIRONMENT
+.IP DSMI_DIR
+The full path to the Tivoli Client directory without a trailing slash (this is important). On Linux, it is usually
+.IR /opt/tivoli/tsm/client/ba/bin
+.IP DSMI_CONFIG
+The full path and file name of the Tivoli Client's
+.IR dsm.opt
+or
+.IR dsm.sys
+configuration file. On Linux, it should be
+.IR $DSMI_DIR/dsm.opt
+
+.SH BUGS
+No known bugs.
+

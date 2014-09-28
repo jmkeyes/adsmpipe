@@ -1,0 +1,19 @@
+# Ignore the build artifacts.
+adsmpipe
+adsmpipe.1.gz
+adsmpipe*.tar.gz
+adsmpipe*.rpm
+adsmpipe*.deb
+source/*.o
+
+# Ignore the temporary build directory.
+.build
+
+# Keep required Debian packaging files.
+!debian/changelog
+!debian/compat
+!debian/control
+!debian/copyright
+!debian/rules
+!debian/source
+debian/*

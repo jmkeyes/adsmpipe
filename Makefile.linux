@@ -1,0 +1,28 @@
+# Makefile.linux
+
+include rules/defaults.mk
+
+TIVOLI_API_PATH ?= /opt/tivoli/tsm/client/api
+
+ifeq ($(ARCHITECTURE), i686)
+    CFLAGS             += -m32
+    TIVOLI_API_LIB_NAME = ApiDS
+    TIVOLI_LIBRARY_PATH = $(TIVOLI_API_PATH)/bin/
+    TIVOLI_INCLUDE_PATH = $(TIVOLI_API_PATH)/bin/sample/
+endif
+
+ifeq ($(ARCHITECTURE), x86_64)
+    CFLAGS             += -m64
+    TIVOLI_API_LIB_NAME = ApiTSM64
+    TIVOLI_LIBRARY_PATH = $(TIVOLI_API_PATH)/bin64/
+    TIVOLI_INCLUDE_PATH = $(TIVOLI_API_PATH)/bin64/sample/
+endif
+
+ifdef DEBUG
+    CFLAGS += -g
+endif
+
+CFLAGS  += -I$(TIVOLI_INCLUDE_PATH)
+LDFLAGS += -L$(TIVOLI_LIBRARY_PATH) -l$(TIVOLI_API_LIB_NAME)
+
+include rules/rules.mk
