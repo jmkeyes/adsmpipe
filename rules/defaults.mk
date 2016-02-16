@@ -29,6 +29,7 @@ ECHO    = echo
 GZIP    = gzip -c
 INSTALL = install
 MKDIR   = mkdir -p
+WGET    = wget
 TAR     = tar
 RM      = rm -rf
 MV      = mv

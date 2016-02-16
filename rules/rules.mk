@@ -10,11 +10,21 @@ STANDARD_TARGETS = all clean install
 .PHONY: $(STANDARD_TARGETS) $(TAR_TARGETS) $(RPM_TARGETS) $(DEB_TARGETS)
 
 ADSMPIPE_OUTPUT  := $(PACKAGE_NAME)
-ADSMPIPE_OBJECTS := $(patsubst %.c,%.o,$(wildcard source/*.c))
+ADSMPIPE_SOURCES := source/adsmpipe.c source/adsmblib.c
+ADSMPIPE_OBJECTS := $(ADSMPIPE_SOURCES:%.c=%.o)
+ADSMPIPE_ARCHIVE ?= "ftp://www.redbooks.ibm.com/redbooks/REDP3980/adsmpipe.tar.Z"
 
-%.o: %.c
+$(PACKAGE_NAME).tar.Z:
+	@$(ECHO) "  WGET $@"
+	@$(WGET) -q -O $@ $(ADSMPIPE_ARCHIVE)
+
+$(ADSMPIPE_SOURCES): $(PACKAGE_NAME).tar.Z
+	@$(ECHO) "UNPACK $@"
+	@$(TAR) -x -Z -f $^ -O aix/adsmpipe/$(@:source/%=%) > $@
+
+$(ADSMPIPE_OBJECTS): $(ADSMPIPE_SOURCES)
 	@$(ECHO) "    CC $@"
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $(@:%.o=%.c) -o $@
 
 $(ADSMPIPE_OUTPUT): $(ADSMPIPE_OBJECTS)
 	@$(ECHO) "    LD $@"
@@ -31,6 +41,8 @@ build-clean:
 	@$(RM) $(ADSMPIPE_OBJECTS) $(ADSMPIPE_OUTPUT) $(PACKAGE_NAME).1.gz
 
 distclean: clean
+	@$(ECHO) "    RM $(PACKAGE_NAME).tar.Z $(ADSMPIPE_SOURCES)"
+	@$(RM) $(PACKAGE_NAME).tar.Z $(ADSMPIPE_SOURCES)
 
 clean: build-clean tmp-clean tar-clean rpm-clean deb-clean
 
