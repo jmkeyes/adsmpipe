@@ -14,13 +14,17 @@ ADSMPIPE_SOURCES := source/adsmpipe.c source/adsmblib.c
 ADSMPIPE_OBJECTS := $(ADSMPIPE_SOURCES:%.c=%.o)
 ADSMPIPE_ARCHIVE ?= "ftp://www.redbooks.ibm.com/redbooks/REDP3980/adsmpipe.tar.Z"
 
+source:
+	@$(ECHO) " MKDIR $@"
+	@$(MKDIR) -p $@
+
 $(PACKAGE_NAME).tar.Z:
 	@$(ECHO) "  WGET $@"
 	@$(WGET) -q -O $@ $(ADSMPIPE_ARCHIVE)
 
-$(ADSMPIPE_SOURCES): $(PACKAGE_NAME).tar.Z
+$(ADSMPIPE_SOURCES): source $(PACKAGE_NAME).tar.Z
 	@$(ECHO) "UNPACK $@"
-	@$(TAR) -x -Z -f $^ -O aix/adsmpipe/$(@:source/%=%) > $@
+	@$(TAR) -x -Z -f $(PACKAGE_NAME).tar.Z -O aix/adsmpipe/$(@:source/%=%) > $@
 
 $(ADSMPIPE_OBJECTS): $(ADSMPIPE_SOURCES)
 	@$(ECHO) "    CC $@"
