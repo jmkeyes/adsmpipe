@@ -7,7 +7,7 @@ as they are not supported by the Tivoli Data Protection suite.
 Dependencies
 ------------
  - The Tivoli API package (TIVsm-API / TIVsm-API64)
- - GNU Make and a working GCC compiler.
+ - GNU Make, the GCC compiler, and a functioning `ncompress` utility.
  - (Optional) The `rpmbuild` tool for building RPM packages.
  - (Optional) The `debbuild` tool for building DEB packages.
 
