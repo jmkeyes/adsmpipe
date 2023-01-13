@@ -12,7 +12,7 @@ STANDARD_TARGETS = all clean install
 ADSMPIPE_OUTPUT  := $(PACKAGE_NAME)
 ADSMPIPE_SOURCES := source/adsmpipe.c source/adsmblib.c
 ADSMPIPE_OBJECTS := $(ADSMPIPE_SOURCES:%.c=%.o)
-ADSMPIPE_ARCHIVE ?= "ftp://www.redbooks.ibm.com/redbooks/REDP3980/adsmpipe.tar.Z"
+ADSMPIPE_ARCHIVE ?= "https://www.redbooks.ibm.com/addmat/REDP3980/adsmpipe.tar.Z"
 
 source:
 	@$(ECHO) " MKDIR $@"
