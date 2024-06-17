@@ -1,3 +1,7 @@
+# Ignore downloaded sources.
+adsmpipe.tar.Z
+source/
+
 # Ignore the build artifacts.
 adsmpipe
 adsmpipe.1.gz
